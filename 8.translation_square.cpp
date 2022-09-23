@@ -1,4 +1,4 @@
-// shearing triangle 60 80 120 80 100 120 2 2
+// translation square 0,30 30,30 30,0 0,0 100,100
 
 #include <bits/stdc++.h>
 #include <graphics.h>
@@ -38,7 +38,7 @@ void draw_plot(int x, int y)
     }
 }
 
-void graph(int x, int y, int x1, int y1, int x2, int y2)
+void graph(int x, int y, int x1, int y1, int x2, int y2, int x3, int y3)
 {
 
     // graph initialization
@@ -51,10 +51,12 @@ void graph(int x, int y, int x1, int y1, int x2, int y2)
     x = midx + x;
     x1 = midx + x1;
     x2 = midx + x2;
+    x3 = midx + x3;
 
     y = midy - y;
     y1 = midy - y1;
     y2 = midy - y2;
+    y3 = midy - y3;
 
     setcolor(WHITE);
     outtextxy(midx + 20, midy + 20, "(0,0)");
@@ -64,57 +66,50 @@ void graph(int x, int y, int x1, int y1, int x2, int y2)
     outtextxy(x1 + 5, y1 + 5, "2");
     setcolor(WHITE);
     outtextxy(x2 + 5, y2 + 5, "3");
+    setcolor(WHITE);
+    outtextxy(x3 + 5, y3 + 5, "4");
 
-    setcolor(RED);
     line(x, y, x1, y1);
     line(x1, y1, x2, y2);
-    line(x2, y2, x, y);
+    line(x2, y2, x3, y3);
+
+    line(x3, y3,x, y);
 }
 
-int main() 
+int main()
 {
-    int x, y, x1, y1, x2, y2, x3, y3;
-	int sher_fctr_x, sher_fctr_y;
+    int x, y, x1, y1, x2, y2,x3,y3;
+    int trans_fctr_x, trans_fctr_y;
 
-
-    cout << "Shearing Triangle" << endl;
-    cout << "Enter first coordinate of triangle = ";
+    cout << "Translation Square" << endl;
+    cout << "Enter first coordinate of Square = ";
     cin >> x >> y;
 
-    cout << "Enter second coordinate of triangle = ";
+    cout << "Enter second coordinate of Square = ";
     cin >> x1 >> y1;
 
-    cout << "Enter third coordinate of triangle = ";
+    cout << "Enter third coordinate of Square = ";
     cin >> x2 >> y2;
 
-	cout << "Enter shearing factor (x,y) = ";
-    cin >>sher_fctr_x  >> sher_fctr_y;
+        cout << "Enter fourth coordinate of Square = ";
+    cin >> x3>> y3;
 
-    graph(x, y, x1, y1, x2, y2);
+    cout << "Enter Translation factor x and y = ";
+    cin >> trans_fctr_x >> trans_fctr_y;
 
-    // Shearing on x axis  //or cos 180
-    x += sher_fctr_x * y;
-    y = -y;
+    graph(x, y, x1, y1, x2, y2,x3,y3);
 
-    x1 += sher_fctr_x * y1;
-    y1 = -y1;
+    x = x + trans_fctr_x;
+    x1 = x1 + trans_fctr_x;
+    x2 = x2 + trans_fctr_x;
+    x3 = x3 + trans_fctr_x;
 
-    x2 += sher_fctr_x * y2;
-    y2 = -y2;
+    y = y + trans_fctr_y;
+    y1 = y1 + trans_fctr_y;
+    y2 = y2 + trans_fctr_y;
+    y3 = y3 + trans_fctr_y;
 
-    graph(x, y, x1, y1, x2, y2);
-
-    // Shearing on y axis
-    // x = -x;
-    // y += sher_fctr_y * x;
-
-    // x1 = -x1;
-    // y1 += sher_fctr_y * x1;
-
-    // x2 = -x2;
-    // y2 += sher_fctr_y * x2;
-
-    // graph(x, y, x1, y1, x2, y2);
+    graph(x, y, x1, y1, x2, y2,x3,y3);
 
     getch();
     closegraph();

@@ -1,4 +1,4 @@
-// shearing triangle 60 80 120 80 100 120 2 2
+// Reflect triangle 60 80 120 80 100 120
 
 #include <bits/stdc++.h>
 #include <graphics.h>
@@ -74,10 +74,8 @@ void graph(int x, int y, int x1, int y1, int x2, int y2)
 int main() 
 {
     int x, y, x1, y1, x2, y2, x3, y3;
-	int sher_fctr_x, sher_fctr_y;
 
-
-    cout << "Shearing Triangle" << endl;
+    cout << "Reflect Triangle" << endl;
     cout << "Enter first coordinate of triangle = ";
     cin >> x >> y;
 
@@ -87,34 +85,31 @@ int main()
     cout << "Enter third coordinate of triangle = ";
     cin >> x2 >> y2;
 
-	cout << "Enter shearing factor (x,y) = ";
-    cin >>sher_fctr_x  >> sher_fctr_y;
-
     graph(x, y, x1, y1, x2, y2);
 
-    // Shearing on x axis  //or cos 180
-    x += sher_fctr_x * y;
+    // reflection on x axis  //or cos 180
+    x = x;
     y = -y;
 
-    x1 += sher_fctr_x * y1;
+    x1 = x1;
     y1 = -y1;
 
-    x2 += sher_fctr_x * y2;
+    x2 = x2;
     y2 = -y2;
 
     graph(x, y, x1, y1, x2, y2);
 
-    // Shearing on y axis
-    // x = -x;
-    // y += sher_fctr_y * x;
+    // reflection on y axis
+    x = -x;
+    y = y;
 
-    // x1 = -x1;
-    // y1 += sher_fctr_y * x1;
+    x1 = -x1;
+    y1 = y1;
 
-    // x2 = -x2;
-    // y2 += sher_fctr_y * x2;
+    x2 = -x2;
+    y2 = y2;
 
-    // graph(x, y, x1, y1, x2, y2);
+    graph(x, y, x1, y1, x2, y2);
 
     getch();
     closegraph();

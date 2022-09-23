@@ -1,4 +1,4 @@
-// shearing triangle 60 80 120 80 100 120 2 2
+// translation square 20,50 120,240 30
 
 #include <bits/stdc++.h>
 #include <graphics.h>
@@ -38,7 +38,7 @@ void draw_plot(int x, int y)
     }
 }
 
-void graph(int x, int y, int x1, int y1, int x2, int y2)
+void graph(int x, int y, int x1, int y1)
 {
 
     // graph initialization
@@ -50,11 +50,9 @@ void graph(int x, int y, int x1, int y1, int x2, int y2)
     int midy = screenHeight / 2;
     x = midx + x;
     x1 = midx + x1;
-    x2 = midx + x2;
 
     y = midy - y;
     y1 = midy - y1;
-    y2 = midy - y2;
 
     setcolor(WHITE);
     outtextxy(midx + 20, midy + 20, "(0,0)");
@@ -62,59 +60,37 @@ void graph(int x, int y, int x1, int y1, int x2, int y2)
     outtextxy(x + 5, y + 5, "1");
     setcolor(WHITE);
     outtextxy(x1 + 5, y1 + 5, "2");
-    setcolor(WHITE);
-    outtextxy(x2 + 5, y2 + 5, "3");
 
-    setcolor(RED);
+
     line(x, y, x1, y1);
-    line(x1, y1, x2, y2);
-    line(x2, y2, x, y);
+
 }
 
-int main() 
+int main()
 {
-    int x, y, x1, y1, x2, y2, x3, y3;
-	int sher_fctr_x, sher_fctr_y;
+    int x, y, x1, y1;
+    int A;
 
-
-    cout << "Shearing Triangle" << endl;
-    cout << "Enter first coordinate of triangle = ";
+    cout << "Translation Line" << endl;
+    cout << "Enter first coordinate of Square = ";
     cin >> x >> y;
-
-    cout << "Enter second coordinate of triangle = ";
+    
+    cout << "Enter second coordinate of Square = ";
     cin >> x1 >> y1;
 
-    cout << "Enter third coordinate of triangle = ";
-    cin >> x2 >> y2;
+    cout << "Enter Translation factor x and y = ";
+    cin >> A;
 
-	cout << "Enter shearing factor (x,y) = ";
-    cin >>sher_fctr_x  >> sher_fctr_y;
+    graph(x, y, x1, y1);
 
-    graph(x, y, x1, y1, x2, y2);
+    x = x*cos(A*3.1416/180) - y*sin(A*3.1416/180);
+    y = x*sin(A*3.1416/180) + y*cos(A*3.1416/180);
 
-    // Shearing on x axis  //or cos 180
-    x += sher_fctr_x * y;
-    y = -y;
+    x1 = x1*cos(A*3.1416/180) - y1*sin(A*3.1416/180);
+    y1 = x1*sin(A*3.1416/180) + y1*cos(A*3.1416/180);
 
-    x1 += sher_fctr_x * y1;
-    y1 = -y1;
-
-    x2 += sher_fctr_x * y2;
-    y2 = -y2;
-
-    graph(x, y, x1, y1, x2, y2);
-
-    // Shearing on y axis
-    // x = -x;
-    // y += sher_fctr_y * x;
-
-    // x1 = -x1;
-    // y1 += sher_fctr_y * x1;
-
-    // x2 = -x2;
-    // y2 += sher_fctr_y * x2;
-
-    // graph(x, y, x1, y1, x2, y2);
+    setcolor(RED);
+    graph(x, y, x1, y1);
 
     getch();
     closegraph();
