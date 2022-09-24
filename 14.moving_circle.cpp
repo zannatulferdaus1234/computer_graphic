@@ -21,6 +21,7 @@ int main()
     int midy = height / 2;
 
     x1 = midx + x1;
+    
     x2 = midx + x2;
     y1 = midy - y1;
     y2 = midy - y2;
