@@ -1,94 +1,87 @@
-// Scalling line,polygon 10,10,50,50, 4,5
-
-
-#include <bits/stdc++.h>
-#include <graphics.h>
+#include<conio.h>
+#include<iostream>
+#include<graphics.h>
 using namespace std;
+static int LEFT=1,RIGHT=2,BOTTOM=4,TOP=8,xl,yl,xh,yh;
 
-void draw_plot(int x, int y)
-{
-    int screenWidth = x;
-    int screenHeight = y;
-
-    int gd = DETECT, gm;
-    initgraph(&gd, &gm, (char *)" ");
-
-    setcolor(YELLOW);
-    line(0, screenHeight / 2, screenWidth, screenHeight / 2);
-    setcolor(YELLOW);
-    line(screenWidth / 2, 0, screenWidth / 2, screenHeight);
-
-    for (int i = x / 2 + 20; i <= x; i += 20)
-    {
-        for (int j = y / 2 + 20; j <= y; j += 20)
-        {
-            setcolor(DARKGRAY);
-            line(0, j, x, j);
-            line(i, 0, i, y);
-        }
-    }
-
-    for (int i = x / 2 - 20; i >= 0; i -= 20)
-    {
-        for (int j = y / 2 - 20; j >= 0; j -= 20)
-        {
-            setcolor(DARKGRAY);
-            line(0, j, x, j);
-            line(i, 0, i, y);
-        }
-    }
-}
-
-void graph(int x, int y, int r)
-{
-
-    // graph initialization
-    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
-    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-    draw_plot(screenWidth, screenHeight);
-
-    int midx = screenWidth / 2;
-    int midy = screenHeight / 2;
-    
-    x = midx + x;
-    y = midy - y;
-
-    setcolor(WHITE);
-    outtextxy(midx + 20, midy + 20, "(0,0)");
-
-    setcolor(WHITE);
-    outtextxy(x + 5, y + 5, "S");
-
-
-    circle(x, y, r);
+int getcode(int x,int y){
+	int code = 0;
+	//Perform Bitwise OR to get outcode
+	if(y > yh) code |=TOP;
+	if(y < yl) code |=BOTTOM;
+	if(x < xl) code |=LEFT;
+	if(x > xh) code |=RIGHT;
+	
+	return code;
 }
 
 int main()
 {
-    int x, y, x2, y2,r,r2;
-    int scl_fctr_x, scl_fctr_y,scl_fctr_r;
+	int gdriver = DETECT,gmode;
+	initgraph(&gdriver,&gmode,(char*)"");
+	setcolor(BLUE);
+	cout<<"Enter bottom left and top right co-ordinates of window: ";
+	cin>>xl>>yl>>xh>>yh;
+	rectangle(xl,yl,xh,yh);
+	int x1,y1,x2,y2;
+	cout<<"Enter the endpoints of the line: ";
+	cin>>x1>>y1>>x2>>y2;
+	line(x1,y1,x2,y2);
+	getch();
 
-    cout << "Circle Triangle" << endl;
-    cout << "Enter center coordinate of circle = ";
-    cin >> x >> y;
-
- 
-    cout << "Enter radius = ";
-    cin >> r;
-
-    cout << "Enter Scaling factor for radius r ";
-    cin >>scl_fctr_r;
-
-    graph(x, y, r);
-
-
-
-    r = r * scl_fctr_r;
-
-
-    graph(x, y, r);
-
-
-    getch();
-    closegraph();
+	int outcode1=getcode(x1,y1), outcode2=getcode(x2,y2);
+	int accept = 0; 	//decides if line is to be drawn
+	while(1){
+		float m =(float)(y2-y1)/(x2-x1);
+		//Both points inside. Accept line
+		if(outcode1==0 && outcode2==0){ 
+			accept = 1;
+			break;
+		}
+		//AND of both codes != 0.Line is outside. Reject line
+		else if((outcode1 & outcode2)!=0){
+			break;
+		}else{
+			int x,y;
+			int temp;
+			//Decide if point1 is inside, if not, calculate intersection
+			if(outcode1==0) 
+				temp = outcode2;
+			else 
+				temp = outcode1;
+			//Line clips top edge
+			if(temp & TOP){
+				x = x1+ (yh-y1)/m;
+				y = yh;
+			}
+			else if(temp & BOTTOM){ 	//Line clips bottom edge
+				x = x1+ (yl-y1)/m;
+				y = yl;
+			}else if(temp & LEFT){ 	//Line clips left edge
+				x = xl;
+				y = y1+ m*(xl-x1);
+			}else if(temp & RIGHT){ 	//Line clips right edge
+				x = xh;
+				y = y1+ m*(xh-x1);
+			}
+			//Check which point we had selected earlier as temp, and replace its co-ordinates
+			if(temp == outcode1){ 
+				x1 = x;
+				y1 = y;
+				outcode1 = getcode(x1,y1);
+			}else{
+				x2 = x;
+				y2 = y;
+				outcode2 = getcode(x2,y2);
+			}
+		}
+	}
+	setcolor(WHITE);
+	cout<<"After clipping:";
+	if(accept)
+		line(x1,y1,x2,y2);
+	
+	getch();
+	closegraph();
+  return 0;
 }
